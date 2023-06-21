@@ -9,7 +9,7 @@ services:
     expose:
       - "8761"
     networks:
-      - Microservice-java
+      - microservice-java
     
   api-gateway:
     image: geovanix/api-gateway:1.0.0
@@ -23,7 +23,7 @@ services:
       - PORT=8765
       - EUREKA_URL=http://eureka-server:8761/eureka
     networks:
-      - Microservice-java
+      - microservice-java
 
   user-api:
     image: geovanix/user-api:1.0.0
@@ -36,7 +36,7 @@ services:
       - PORT=8001
       - EUREKA_URL=http://eureka-server:8761/eureka
     networks:
-      - Microservice-java
+      - microservice-java
 
   payroll-api:
     image: geovanix/payroll-api:1.0.0
@@ -50,8 +50,8 @@ services:
       - PORT=8100
       - EUREKA_URL=http://eureka-server:8761/eureka
     networks:
-      - Microservice-java
+      - microservice-java
 
 networks:
-  Microservice-java:
+  microservice-java:
     driver: bridge
