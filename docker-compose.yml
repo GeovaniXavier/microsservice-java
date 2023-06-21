@@ -1,0 +1,57 @@
+version: '3.4'
+
+services:
+
+  eureka-server:
+    image: geovanix/eureka-server:1.0.0
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    networks:
+      - Microservice-java
+    
+  api-gateway:
+    image: geovanix/api-gateway:1.0.0
+    ports:
+      - "8765:8765"
+    expose:
+      - "8765"
+    depends_on:
+      - eureka-server
+    environment:
+      - PORT=8765
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+      - Microservice-java
+
+  user-api:
+    image: geovanix/user-api:1.0.0
+    ports:
+      - "8000:8000"
+    depends_on:
+      - eureka-server
+      - api-gateway
+    environment:
+      - PORT=8001
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+      - Microservice-java
+
+  payroll-api:
+    image: geovanix/payroll-api:1.0.0
+    ports:
+      - "8100:8100"
+    depends_on:
+      - eureka-server
+      - api-gateway
+      - user-api
+    environment:
+      - PORT=8100
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+      - Microservice-java
+
+networks:
+  Microservice-java:
+    driver: bridge
